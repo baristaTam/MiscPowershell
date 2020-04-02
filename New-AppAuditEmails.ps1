@@ -159,7 +159,7 @@ function New-AppAuditEmails
     
             if($NoUserEmails -eq $false){
                 Write-Output "Sending $($EmailSplat.Attachment) to $($EmailSplat.SendTo)" `n
-                #Send-Email @EmailSplat
+                Send-Email @EmailSplat
             }
             else{
                 Write-Output "$($EmailSplat.Attachment) would have sent to $($EmailSplat.SendTo)" `n
@@ -172,10 +172,10 @@ function New-AppAuditEmails
         $EmailSplat['SendTo'] = $EmailTo
         $EmailSplat['Attachment'] = ".\$($SubjectTemplate).xlsx"
         $EmailSplat['Body'] = "$($SubjectTemplate) attached."
-        #Send-Email @EmailSplat
+        Send-Email @EmailSplat
     
         #Cleanup Workspace
-        #Remove-Item -Path ".\*.xlsx"
+        Remove-Item -Path ".\*.xlsx"
     
     }
     End
