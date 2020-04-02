@@ -1,12 +1,14 @@
 <#
 .Synopsis
-    Creates and emails user app audit reports to managers. Imports an Excel user listing and generates an Excel report for managers of users listed in the Excel user listing. The report is then attached
-    to an email asking the manager to confirm necessary access. VIP Managers can be exempt by title or email, i.e. "Executive Vice President" or "CEO@company.com"
-    This function requires a consistent AD structure where Manager is set properly and a user report from the application with an email column. 
+    Creates and emails user app audit reports to managers. Imports an Excel user listing and generates an Excel report for managers of 
+    users listed in the Excel user listing. The report is then attached to an email asking the manager to confirm necessary access. 
+    VIP Managers can be exempt by title or email, i.e. "Executive Vice President" or "CEO@company.com"
+    This function requires an AD structure where Manager is set properly and a user report from the application with an email column. 
 .DESCRIPTION
-    Imports an Excel user listing and generates an Excel report for managers of users listed in the Excel user listing. The report is then attached
-    to an email asking the manager to confirm necessary access. VIP Managers can be exempt by title or email, i.e. "Executive Vice President" or "CEO@company.com"
-    This function requires a consistent AD structure where Manager is set properly and a user report from the application with an email column. 
+    Creates and emails user app audit reports to managers. Imports an Excel user listing and generates an Excel report for managers of 
+    users listed in the Excel user listing. The report is then attached to an email asking the manager to confirm necessary access. 
+    VIP Managers can be exempt by title or email, i.e. "Executive Vice President" or "CEO@company.com"
+    This function requires an AD structure where Manager is set properly and a user report from the application with an email column.
 .PARAMETER SubjectTemplate
     Name to give the subject of the emails and used within the body of the email. Typically "AppName User Review"
 .PARAMETER ReportPath
@@ -90,11 +92,14 @@ function New-AppAuditEmails
             "Good morning, <br>
             <br>
             Information Security is conducting the semi-annual $($SubjectTemplate). 
-            As part of our periodic review process, we reach out to application owners and managers in order to validate that user permissions are appropriate for their current role or job responsibilities. 
-            Included with this email is the list of associates that have access to the application, along with the roles/permissions that have been provisioned to each employee. 
-            The list of users that you are responsible for reviewing are included in the attached excel file. Please find the sheet titled with your name, There you can see the employees under you for reviewing.  
-            Respond to this email either affirming that the access for the employee is appropriate, or indicating any changes that need to be made to the existing access. 
-            Provide your response by $($ReplyByDate). Changes based on the review performed will be requested and completed prior to the closure of this process.
+            As part of our periodic review process, we reach out to application owners and managers in order to validate that user 
+            permissions are appropriate for their current role or job responsibilities. Included with this email is the list of associates
+            that have access to the application, along with the roles/permissions that have been provisioned to each employee. 
+            The list of users that you are responsible for reviewing are included in the attached excel file. Please find the sheet titled
+            with your name, There you can see the employees under you for reviewing. Respond to this email either affirming that the
+            access for the employee is appropriate, or indicating any changes that need to be made to the existing access. Provide your 
+            response by $($ReplyByDate). Changes based on the review performed will be requested and completed prior to the closure of 
+            this process.
             <br>
             <br>
             Thanks,
