@@ -1,10 +1,10 @@
 <#
 .Synopsis
-    Imports an Excel user listing. An Excel report is generated for managers of users listed in the Excel user listing. The report is then attached
+    Creates and emails user app audit reports to managers. Imports an Excel user listing and generates an Excel report for managers of users listed in the Excel user listing. The report is then attached
     to an email asking the manager to confirm necessary access. VIP Managers can be exempt by title or email, i.e. "Executive Vice President" or "CEO@company.com"
     This function requires a consistent AD structure where Manager is set properly and a user report from the application with an email column. 
 .DESCRIPTION
-    Imports an Excel user listing. An Excel report is generated for managers of users listed in the Excel user listing. The report is then attached
+    Imports an Excel user listing and generates an Excel report for managers of users listed in the Excel user listing. The report is then attached
     to an email asking the manager to confirm necessary access. VIP Managers can be exempt by title or email, i.e. "Executive Vice President" or "CEO@company.com"
     This function requires a consistent AD structure where Manager is set properly and a user report from the application with an email column. 
 .PARAMETER SubjectTemplate
