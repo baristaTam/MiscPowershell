@@ -170,11 +170,11 @@ function New-AppAuditEmails
             }
     
             if($NoUserEmails -eq $false){
-                Write-Output "Sending $($EmailSplat.Attachments) to $($EmailSplat.To)" `n
+                Write-Verbose "Sending $($EmailSplat.Attachments) to $($EmailSplat.To)" `n
                 Send-MailMessage @EmailSplat
             }
             else{
-                Write-Verbose "$($EmailSplat.Attachments) would have sent to $($EmailSplat.To)" `n
+                Write-Output "$($EmailSplat.Attachments) would have sent to $($EmailSplat.To)" `n
             }
     
         } 
