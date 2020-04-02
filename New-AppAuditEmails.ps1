@@ -36,7 +36,7 @@
 .EXAMPLE
     New-AppAuditEmails -SubjectTemplate "Quickbooks User Review" -ReportPath ".\Quickbooks_User_Report.xlsx" -EmailColumnName "Email Address" -ReplyByDays 14
 .EXAMPLE
-    New-AppAuditEmails -SubjectTemplate "Quickbooks User Review" -ReportPath ".\Quickbooks_User_Report.xlsx" -VIPs @"Accountant@company.com"
+    New-AppAuditEmails -SubjectTemplate "Quickbooks User Review" -ReportPath ".\Quickbooks_User_Report.xlsx" -VIPs "Accountant@company.com", "CEO@company.com"
 #>
 function New-AppAuditEmails
 {
