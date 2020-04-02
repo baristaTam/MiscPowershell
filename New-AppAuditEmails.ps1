@@ -22,13 +22,13 @@
 .PARAMETER NoUserEmails
     When true, does not send emails to managers, only prints "would have sent" text
 .PARAMETER EmailTo
-    Email address to send reports that have no manager or are exceptions, as well as the main report listing. 
+    Email address to send reports that have no manager or are exceptions, as well as the main report listing
 .PARAMETER EmailFrom
     Email address to send reports from.
 .PARAMETER VIPTitle
-    Title of managers who should not be sent emails. These emails will instead be sent to the EmailTo address. 
+    Title of managers who should not be sent emails. These emails will instead be sent to the EmailTo address
 .PARAMETER VIPs
-    Comma separated list of specific emails to exclude.
+    Comma separated list of specific emails to exclude
 .PARAMETER ReplyByDays
     Days out to request a reply from the manager by
 .EXAMPLE
