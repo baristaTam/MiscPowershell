@@ -85,7 +85,7 @@ function New-AppAuditEmails
         [int]$ReplyByDays = 7,
 
         [parameter()]
-		[string]$SMTPServer 
+	    [string]$SMTPServer 
     )
 
     Begin
@@ -174,7 +174,7 @@ function New-AppAuditEmails
                 Send-MailMessage @EmailSplat
             }
             else{
-                Write-Output "$($EmailSplat.Attachments) would have sent to $($EmailSplat.To)" `n
+                Write-Verbose "$($EmailSplat.Attachments) would have sent to $($EmailSplat.To)" `n
             }
     
         } 
