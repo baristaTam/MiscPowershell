@@ -22,15 +22,19 @@
 .PARAMETER NoUserEmails
     When true, does not send emails to managers, only prints "would have sent" text
 .PARAMETER EmailTo
-    Email address to send reports that have no manager or are exceptions, as well as the main report listing
+    Email address to send reports that have no manager, are exceptions, as well as the main report listing
+    It's recommended to set this as a default in the parameter block. 
 .PARAMETER EmailFrom
-    Email address to send reports from.
+    Email address to send reports from. It's recommended to set this as a default in the parameter block. 
 .PARAMETER VIPTitle
-    Title of managers who should not be sent emails. These emails will instead be sent to the EmailTo address
+    Title of managers who should not be sent emails. i.e. "Executive VP" These emails will instead be sent to the EmailTo address.
+    It's recommended to set this as a default in the parameter block. 
 .PARAMETER VIPs
-    Comma separated list of specific emails to exclude
+    Comma separated list of specific emails to exclude. It's recommended to set this as a default in the parameter block.
 .PARAMETER ReplyByDays
-    Days out to request a reply from the manager by
+    Days out to request a reply from the manager by. Default is 7
+.PARAMETER SMTPServer
+    SMTP Server name i.e. mail.company.com. It's recommended to set this as a default in the parameter block. 
 .EXAMPLE
     New-AppAuditEmails -SubjectTemplate "Quickbooks User Review" -ReportPath ".\Quickbooks_User_Report.xlsx"
 .EXAMPLE
@@ -64,21 +68,24 @@ function New-AppAuditEmails
         [Parameter()]
         [switch]$NoUserEmails = $false,
 
-        #Parameters with defaults you will want to change
+        #For the parameters below you will want to add defaults
         [Parameter()]
-        [String]$EmailTo = "ITSecurity@company.com",
+        [String]$EmailTo,
 
         [Parameter()]
-        [string]$EmailFrom = "ITSecurity@company.com",
+        [string]$EmailFrom,
 
         [Parameter()]
-        [string]$VIPTitle = "Executive Vice President",
+        [string]$VIPTitle,
 
         [Parameter()]
-        [string[]]$VIPs = @("VIP@company.com", "CEO@company.com", "CIO@company.com"),    
+        [string[]]$VIPs,    
 
         [Parameter()]
-        [int]$ReplyByDays = 7
+        [int]$ReplyByDays = 7,
+
+        [parameter()]
+		[string]$SMTPServer 
     )
 
     Begin
@@ -136,48 +143,54 @@ function New-AppAuditEmails
         Foreach ($Group in $Groups) { 
             $GroupName = $Group.Name
             Export-Excel -InputObject $Group.Group -Path ".\$($GroupName).xlsx"
-            
-            
     
             $EmailSplat = @{
-                SendTo = [string]::Empty
+                To = [string]::Empty
                 Subject = ($SubjectTemplate)
                 Body = ($BodyTemplate)
-                Attachment = ".\$($GroupName).xlsx"
-                SendFrom = $EmailFrom
+                Attachments = ".\$($GroupName).xlsx"
+                From = $EmailFrom
+                BodyAsHTML = $true
+                SMTPServer = $SMTPServer
             }
             if($Testing -eq $true){
-                $EmailSplat['SendTo'] = $EmailTo
+                $EmailSplat['To'] = $EmailTo
             }
             elseif($GroupName -eq "No Manager"){
-                $EmailSplat['SendTo'] = $EmailTo
+                $EmailSplat['To'] = $EmailTo
             }
             elseif($Group.Group[0].ManagerEmail -in $VIPs){
-                $EmailSplat['SendTo'] = $EmailTo
+                $EmailSplat['To'] = $EmailTo
             }
             elseif($Group.Group[0].ManagerTitle -eq $VIPTitle){
-                $EmailSplat['SendTo'] = $EmailTo
+                $EmailSplat['To'] = $EmailTo
             }
             else{
-                $EmailSplat['SendTo'] = $Group.Group[0].ManagerEmail
+                $EmailSplat['To'] = $Group.Group[0].ManagerEmail
             }
     
             if($NoUserEmails -eq $false){
-                Write-Output "Sending $($EmailSplat.Attachment) to $($EmailSplat.SendTo)" `n
-                Send-Email @EmailSplat
+                Write-Output "Sending $($EmailSplat.Attachments) to $($EmailSplat.To)" `n
+                Send-MailMessage @EmailSplat
             }
             else{
-                Write-Output "$($EmailSplat.Attachment) would have sent to $($EmailSplat.SendTo)" `n
+                Write-Output "$($EmailSplat.Attachments) would have sent to $($EmailSplat.To)" `n
             }
     
         } 
-    
+        
         #Send Full Report
         Export-Excel -InputObject $Report -Path ".\$($SubjectTemplate).xlsx" -AutoFilter
-        $EmailSplat['SendTo'] = $EmailTo
-        $EmailSplat['Attachment'] = ".\$($SubjectTemplate).xlsx"
-        $EmailSplat['Body'] = "$($SubjectTemplate) attached."
-        Send-Email @EmailSplat
+        $EmailSplat = @{
+            To = $EmailTo
+            Subject = ($SubjectTemplate)
+            Body = "$($SubjectTemplate) attached."
+            Attachments = ".\$($SubjectTemplate).xlsx"
+            From = $EmailFrom
+            BodyAsHTML = $true
+            SMTPServer = $SMTPServer
+        }
+        Send-MailMessage @EmailSplat
     
         #Cleanup Workspace
         Remove-Item -Path ".\*.xlsx"
